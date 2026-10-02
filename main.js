@@ -10,9 +10,9 @@
     el.textContent = '';
     const words = text.split(' ').map(w => {
       const s = document.createElement('span');
-      s.textContent = w + ' ';
+      s.textContent = w;
       s.style.display = 'inline-block';
-      el.appendChild(s);
+      el.append(s, ' ');
       return s;
     });
     const lines = [];
@@ -30,28 +30,20 @@
       o.setAttribute('aria-hidden', 'true');
       const inner = document.createElement('span');
       inner.style.setProperty('--i', i);
-      inner.textContent = l.join('').trim();
+      inner.textContent = l.join(' ');
       o.appendChild(inner);
       el.appendChild(o);
     });
   }
-  const h1 = $('[data-split]');
-  const runSplit = () => h1 && splitLines(h1);
-  (document.fonts ? document.fonts.ready : Promise.resolve()).then(runSplit);
-
-  /* ---------- scroll-scrubbed word reveal ---------- */
-  const scrubs = $$('[data-scrub]').map(el => {
-    const words = el.textContent.trim().split(/\s+/);
-    el.textContent = '';
-    const spans = words.map(w => {
-      const s = document.createElement('span');
-      s.className = 'w';
-      s.textContent = w;
-      el.append(s, ' ');
-      return s;
-    });
-    return { el, spans };
+  const splitEls = $$('[data-split], [data-lines]');
+  const runSplit = () => splitEls.forEach(splitLines);
+  (document.fonts ? Promise.all([document.fonts.load('36px "Hedvig Letters Serif"'), document.fonts.ready]) : Promise.resolve()).then(() => {
+    runSplit();
+    $$('[data-lines]').forEach(el => lineIO.observe(el));
   });
+  const lineIO = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); lineIO.unobserve(e.target); }
+  }), { threshold: 0.2 });
 
   /* ---------- fade-in observer ---------- */
   const io = new IntersectionObserver(es => es.forEach(e => {
@@ -91,12 +83,6 @@
       img.style.translate = `0 ${Math.max(-lim, Math.min(lim, off))}px`;
     });
 
-    scrubs.forEach(({ el, spans }) => {
-      const r = el.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (vh * 0.55 + r.height * 0.5)));
-      const n = Math.round(p * spans.length);
-      spans.forEach((s, i) => s.classList.toggle('on', i < n));
-    });
   }
   const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(frame); } };
   addEventListener('scroll', req, { passive: true });
@@ -141,29 +127,29 @@
     });
   });
 
-  /* ---------- custom cursor on imagery ---------- */
-  const cur = $('.cursor'), curT = $('span', cur);
+  /* ---------- dot cursor: 10px dot, 44px ring over interactive things ---------- */
+  const cur = $('.cursor');
   if (fine) {
-    let cx = 0, cy = 0, tx = 0, ty = 0, s = 0, ts = 0;
-    addEventListener('pointermove', e => { tx = e.clientX; ty = e.clientY; cur.classList.add('on'); });
+    let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
+    addEventListener('pointermove', e => {
+      tx = e.clientX; ty = e.clientY; cur.classList.add('on');
+      cur.classList.toggle('hot', !!e.target.closest('a, button, input, .card, .social__track a'));
+    });
     document.addEventListener('pointerleave', () => cur.classList.remove('on'));
     (function loop() {
-      cx += (tx - cx) * .18; cy += (ty - cy) * .18; s += (ts - s) * .18;
-      cur.style.transform = `translate3d(${cx}px,${cy}px,0) scale(${s})`;
+      cx += (tx - cx) * .22; cy += (ty - cy) * .22;
+      cur.style.transform = `translate3d(${cx}px,${cy}px,0)`;
       requestAnimationFrame(loop);
     })();
-    const hook = (sel, label) => $$(sel).forEach(el => {
-      el.addEventListener('pointerenter', () => { curT.textContent = label; ts = 1; });
-      el.addEventListener('pointerleave', () => { ts = 0; });
-    });
-    hook('.banner--full, .banner--half', 'View');
-    hook('.social__track a', 'Follow');
-    hook('.card__img', 'Shop');
-    $$('.add, .card__img .add').forEach(b => {
-      b.addEventListener('pointerenter', () => ts = 0);
-      b.addEventListener('pointerleave', () => { if (b.closest('.card__img').matches(':hover')) ts = 1; });
-    });
   }
+
+  /* ---------- benefit list: row hover swaps the stacked image ---------- */
+  const stack = $$('#stack img');
+  $$('.list a').forEach(a => {
+    const show = () => stack.forEach((im, k) => im.classList.toggle('on', k === +a.dataset.i));
+    a.addEventListener('pointerenter', show);
+    a.addEventListener('focus', show);
+  });
 
   /* ---------- quick add: cart count + toast ---------- */
   const cartN = $('#cartN'), toast = $('#toast'), cartLink = $('.nav__cart');

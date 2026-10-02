@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="progress" aria-hidden="true"></div>
-<div class="cursor" aria-hidden="true"><span>View</span></div>
+<div class="cursor" aria-hidden="true"></div>
 
 <!-- NAV -->
 <header class="nav" id="nav">
@@ -65,15 +65,15 @@
   <div class="wrap">
     <div class="benefit__head">
       <p class="tag"><i></i>Scents Formula</p>
-      <p class="serif benefit__p" data-scrub>Arum is formulated for depth and endurance. The scent does not announce itself loudly, then disappear. It settles into the skin slowly, staying close for hours, like something that belongs there.</p>
+      <p class="serif benefit__p" data-lines>Arum is formulated for depth and endurance. The scent does not announce itself loudly, then disappear. It settles into the skin slowly, staying close for hours, like something that belongs there.</p>
     </div>
     <div class="benefit__body">
-      <div class="benefit__img"><img src="assets/ben1.png" alt="" data-parallax="0.06"></div>
+      <div class="benefit__img" id="stack"><img class="on" src="assets/ben1.png" alt=""><img src="assets/ben2.png" alt=""><img src="assets/ben1.png" alt="" style="object-position:30% 80%"><img src="assets/ben2.png" alt="" style="object-position:70% 20%"></div>
       <ul class="list">
-        <li><a href="#new"><span class="n">I.</span><span class="l">Rooted In Nature</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
-        <li><a href="#new"><span class="n">II.</span><span class="l">Crafted to last</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
-        <li><a href="#new"><span class="n">III.</span><span class="l">Combined perfect ingredients</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
-        <li><a href="#new"><span class="n">IV.</span><span class="l">Build to embrace elegance</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
+        <li><a href="#new" data-i="0"><span class="n">I.</span><span class="l">Rooted In Nature</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
+        <li><a href="#new" data-i="1"><span class="n">II.</span><span class="l">Crafted to last</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
+        <li><a href="#new" data-i="2"><span class="n">III.</span><span class="l">Combined perfect ingredients</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
+        <li><a href="#new" data-i="3"><span class="n">IV.</span><span class="l">Build to embrace elegance</span><img src="assets/s_ben.svg" alt="" width="24" height="24"></a></li>
       </ul>
     </div>
   </div>
@@ -134,7 +134,7 @@
   <div class="wrap banner__in">
     <p class="tag tag--light"><i></i>Official Store</p>
     <div class="store__text">
-      <h2 class="serif" data-fade>Feel the experience in our exclusive sanctuary.</h2>
+      <h2 class="serif" data-lines>Feel the experience in our exclusive sanctuary.</h2>
       <a class="viewall viewall--light ul" href="#store">(Visit Store)</a>
     </div>
   </div>
@@ -146,7 +146,7 @@
     <div class="about__head">
       <p class="tag"><i></i>Behind The Scents</p>
       <div class="about__copy">
-        <p class="serif about__p" data-scrub>We did not set out to build a brand. We set out to find our way back — to nature, to stillness, to the version of ourselves that exists before the world asks anything of us. Arum is what we found along the way.</p>
+        <p class="serif about__p" data-lines>We did not set out to build a brand. We set out to find our way back — to nature, to stillness, to the version of ourselves that exists before the world asks anything of us. Arum is what we found along the way.</p>
         <a class="viewall ul" href="#about">(About Arum)</a>
       </div>
     </div>
@@ -171,7 +171,7 @@
   <div class="wrap banner__in">
     <p class="tag tag--light"><i></i>Woman Club</p>
     <div class="join__text">
-      <p class="serif" data-fade>Some things are not meant for everyone at once. Join the circle and be the first to encounter what Arum creates next.</p>
+      <p class="serif" data-lines>Some things are not meant for everyone at once. Join the circle and be the first to encounter what Arum creates next.</p>
       <form class="join__form" id="joinForm" novalidate>
         <input type="email" id="email" placeholder="Type your email." aria-label="Email" autocomplete="email">
         <button type="submit"><span>Submit</span></button>
